@@ -4,7 +4,7 @@ import * as APIConstants from '../../variables/APIConstants';
 const TIMEOUT = 5000
 const isHandlerEnabled = (config = {}) => {
     return config.hasOwnProperty('handlerEnabled') && !config.handlerEnabled ?
-        true : false
+        false : true
 }
 
 //Success handler
