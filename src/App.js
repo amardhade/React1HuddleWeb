@@ -20,10 +20,10 @@ export default class App extends React.Component {
         <div>
           <Switch>
             {
-              !this.isAuthentication() && <Route path='/' component={Auth} exact={true} />
+              !this.isAuthentication() && <Route path='/' component={Auth} />
             }
             {
-              this.isAuthentication() && <Route path='/' component={Games} exact={true} />
+              this.isAuthentication() && <Route path='/' component={Games} />
             }
           </Switch>
         </div>

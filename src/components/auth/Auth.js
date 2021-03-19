@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React from 'react';
+import axiosInstance from '../axios/AxiosNetworkInterceptors';
+import * as APIConstants from '../../variables/APIConstants';
+import * as OHAxios from '../axios/OHAxios';
 
 export default class Auth extends React.Component {
 
@@ -12,6 +15,7 @@ export default class Auth extends React.Component {
             isPasswordVerified: this.props ? this.props.isPasswordVerified : false,
             isError: undefined
         }
+        console.log('typeof: ', typeof(axiosInstance))
     }
 
     onEmailChange = (e) => {
@@ -46,30 +50,21 @@ export default class Auth extends React.Component {
             email,
             password
         }
-        axios.post('https://api-v15.1huddle.co/api/rest/v1.5/auth/login', payload, {
-            headers: {
-                'user-type': 'player',
-                'Content-Type': 'application/json',
-                'api-key': 'G9w0BAQsFADAxMS8wLQYDVQQDEyZREFF',
-                'api-secret': 'FADA0MTIwMAYDVQQDEylBREZTITEDCVB',
-                'locale': 'en',
-                'platform': 'WebApp'
-            }
-        })
-            .then((response) => {
-                console.log(response);
-                if (response.data.success) {
-                    this.setState(() => ({ isPasswordVerified: true }))
-                    console.log('Token: ', response.data.data.authentication.onehuddletoken);
-                    localStorage.setItem("token", response.data.data.authentication.onehuddletoken);
-                    window.location.reload();
-                } else {
-                    this.setState(() => ({ isError: "Incorrect password" }));
-                }
-            }).catch((error) => {
-                console.log(error);
-                this.setState(() => ({ isError: "Something went wrong" }));
-            });
+        OHAxios.post(APIConstants.LOGIN, payload)
+            // .then((response) => {
+            //     console.log(response);
+            //     if (response.data.success) {
+            //         this.setState(() => ({ isPasswordVerified: true }))
+            //         console.log('Token: ', response.data.data.authentication.onehuddletoken);
+            //         localStorage.setItem("token", response.data.data.authentication.onehuddletoken);
+            //         window.location.reload();
+            //     } else {
+            //         this.setState(() => ({ isError: "Incorrect password" }));
+            //     }
+            // }).catch((error) => {
+            //     console.log(error);
+            //     this.setState(() => ({ isError: "Something went wrong" }));
+            // });
     }
 
     verifyEmail(email) {
@@ -81,23 +76,18 @@ export default class Auth extends React.Component {
         const payload = {
             email
         }
-        axios.post('https://qa-api.1huddle.co/api/rest/v1.5/login/check_login_email', payload, {
-            headers: {
-                'user-type': 'player',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then((response) => {
-                console.log(response.data.success);
-                if (response.data.success) {
-                    this.updateState(true);
-                } else {
-                    this.setState(() => ({ isError: "Email not registered" }));
-                }
-            }).catch((error) => {
-                console.log(error);
-                this.updateState(false);
-            });
+        OHAxios.post(APIConstants.VERIFY_EMAIL, payload)
+            // .then((response) => {
+            //     console.log(response);
+            //     if (response.data.success) {
+            //         this.updateState(true);
+            //     } else {
+            //         this.setState(() => ({ isError: "Email not registered" }));
+            //     }
+            // }).catch((error) => {
+            //     console.log(error);
+            //     this.updateState(false);
+            // });
     }
 
     updateState(emailVeriifed) {
