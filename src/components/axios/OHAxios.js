@@ -2,22 +2,20 @@ import axios from 'axios';
 import axiosInstance from './AxiosNetworkInterceptors';
 
 
-const handleSuccess = (response, dispatch) => {
-    console.log('Global handle success response: ', response);
-    if(response.data.success){
-        dispatch({ type: 'EMAIL_VERIFIED_SUCCESS', response});
+const handleSuccess = (response, dispatch, actionTypeSuccess, actionTypeError) => {
+    if (response.data.success) {
+        dispatch({ type: actionTypeSuccess, response });
     } else {
-        dispatch({ type: 'EMAIL_VERIFIED_FAILED', response})
+        dispatch({ type: actionTypeError, response })
     }
 }
 
-const handleError = (error, dispatch) => {
-    console.log('Global handle error response: ', error);
-    dispatch({ type: 'EMAIL_VERIFIED_FAILED', error})
+const handleError = (error, dispatch, actionTypeError) => {
+    dispatch({ type: actionTypeError, error })
 }
 
-export const post = (path, payload, dispatch) => {
+export const post = (path, payload, dispatch, actionTypeSuccess, actionTypeError) => {
     axiosInstance.post(path, payload)
-        .then((response) => { handleSuccess(response, dispatch) })
-        .catch((error) => { handleError(error, dispatch) })
+        .then((response) => { handleSuccess(response, dispatch, actionTypeSuccess, actionTypeError) })
+        .catch((error) => { handleError(error, dispatch, actionTypeError) })
 };

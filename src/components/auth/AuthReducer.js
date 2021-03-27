@@ -1,14 +1,20 @@
 import * as OHAxios from '../axios/OHAxios';
-import * as APIConstants from '../../variables/APIConstants'
-import thunk from 'redux-thunk';
-
+import * as APIConstants from '../../variables/APIConstants';
+import * as ActionType from '../../variables/ActionType';
 
 
 export function verifyEmail(email) {
     return async function verifyEmailThunk(dispatch, getState) {
-        dispatch({ type: 'VERIFYING_EMAIL' })
+        dispatch({ type: ActionType.EMAIL_VERIFICATION_PROGRESS })
         const payload = { email };
-        await OHAxios.post(APIConstants.VERIFY_EMAIL, payload, dispatch);
+        await OHAxios.post(APIConstants.VERIFY_EMAIL, payload, dispatch, ActionType.EMAIL_VERIFICATION_SUCCESS, ActionType.EMAIL_VERIFICATION_FAILED);
+    }
+}
+
+export function doLogin(payload) {
+    return async function doLoginHunk(dispatch, getState) {
+        dispatch({ type: ActionType.PWD_VERIFICATION_PROGRESS })
+        await OHAxios.post(APIConstants.LOGIN, payload, dispatch, ActionType.PWD_VERIFICATION_SUCCESS, ActionType.PWD_VERIFICATION_FAILED)
     }
 }
 
@@ -21,31 +27,49 @@ const authReducerDefaultState = {
 };
 const authReducer = (state = authReducerDefaultState, action) => {
     console.log('authReducer STATE: ', state);
+    console.log('Action: ', action);
     switch (action.type) {
-        case 'VERIFYING_EMAIL':
+        case ActionType.EMAIL_VERIFICATION_PROGRESS:
+        case ActionType.PWD_VERIFICATION_PROGRESS:
             return {
                 ...state,
                 isFetchingDetails: true
             }
-        case 'EMAIL_VERIFIED_SUCCESS':
-            console.log('Email verified succes: ', action);
+        case ActionType.EMAIL_VERIFICATION_SUCCESS:
+            const successData = action.response.data;
             return {
                 ...state,
-                data: action.data,
+                data: successData.data,
                 isFetchingDetails: false,
                 isError: false,
                 errorMsg: undefined,
                 isEmailVerified: true
             }
-        case 'EMAIL_VERIFIED_FAILED':
-            console.log('Email verified failed: ', action);
-            const response = action.response.data;
+        case ActionType.EMAIL_VERIFICATION_FAILED:
             return {
                 ...state,
-                data: response.data,
+                data: action.response.data.data,
                 isFetchingDetails: false,
                 isError: true,
-                errorMsg: response.message
+                errorMsg: action.response.data.message
+            }
+         case ActionType.PWD_VERIFICATION_SUCCESS:
+            return {
+                ...state,
+                data: action.response.data.data,
+                isFetchingDetails: false,
+                isError: false,
+                errorMsg: undefined,
+                isPasswordVerified: true
+            }
+        case ActionType.PWD_VERIFICATION_FAILED:
+            return {
+                ...state,
+                data: action.response.data.data,
+                isFetchingDetails: false,
+                isError: true,
+                errorMsg: action.response.data.message,
+                isPasswordVerified: false
             }
         default:
             return state;

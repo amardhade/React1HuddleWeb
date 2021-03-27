@@ -1,11 +1,7 @@
-import axios from 'axios';
 import React from 'react';
 import axiosInstance from '../axios/AxiosNetworkInterceptors';
-import * as APIConstants from '../../variables/APIConstants';
-import * as OHAxios from '../axios/OHAxios';
 import configureStore from '../../store/ConfigureStore';
-import { doLogin } from './AuthActions';
-import { verifyEmail } from './AuthReducer'
+import { verifyEmail, doLogin } from './AuthReducer'
 
 export default class Auth extends React.Component {
 
@@ -21,20 +17,20 @@ export default class Auth extends React.Component {
             errorMsg: this.props ? this.props.errorMsg : undefined,
             isError: undefined
         }
-        console.log('typeof: ', typeof (axiosInstance))
+        
         this.store = configureStore();
         this.store.subscribe(() => {
             const updateState = this.store.getState();
             const authDetails = updateState.authDetails;
             console.log('Subscribe: ', authDetails);
-            this.setState(() => ({ 
+            this.setState(() => ({
                 data: authDetails.data,
                 isFetchingDetails: authDetails.isFetchingDetails,
                 isError: authDetails.isError,
                 errorMsg: authDetails.errorMsg,
                 isEmailVerified: authDetails.isEmailVerified,
                 isPasswordVerified: authDetails.isPasswordVerified
-             }));
+            }));
         });
     }
 
@@ -70,24 +66,8 @@ export default class Auth extends React.Component {
         const payload = {
             email,
             password
-        }
-        console.log('verifuing pwd')
+        };
         this.store.dispatch(doLogin(payload));
-        // OHAxios.post(APIConstants.LOGIN, payload)
-        // .then((response) => {
-        //     console.log(response);
-        //     if (response.data.success) {
-        //         this.setState(() => ({ isPasswordVerified: true }))
-        //         console.log('Token: ', response.data.data.authentication.onehuddletoken);
-        //         localStorage.setItem("token", response.data.data.authentication.onehuddletoken);
-        //         window.location.reload();
-        //     } else {
-        //         this.setState(() => ({ isError: "Incorrect password" }));
-        //     }
-        // }).catch((error) => {
-        //     console.log(error);
-        //     this.setState(() => ({ isError: "Something went wrong" }));
-        // });
     }
 
     verifyEmail(email) {
@@ -98,24 +78,17 @@ export default class Auth extends React.Component {
         this.setState(() => ({ isError: undefined }))
         console.log('verifuing email: ', email)
         this.store.dispatch(verifyEmail({ email }))
-        // OHAxios.post(APIConstants.VERIFY_EMAIL, payload)
-        // .then((response) => {
-        //     console.log(response);
-        //     if (response.data.success) {
-        //         this.updateState(true);
-        //     } else {
-        //         this.setState(() => ({ isError: "Email not registered" }));
-        //     }
-        // }).catch((error) => {
-        //     console.log(error);
-        //     this.updateState(false);
-        // });
     }
 
     updateState(emailVeriifed) {
         this.setState(() => ({
             isEmailVerified: emailVeriifed
         }))
+    }
+
+    passwordVerifiedSuccessfully(token) {
+        localStorage.setItem("token", token);
+        window.location.reload();
     }
 
     render() {
