@@ -1,12 +1,18 @@
 import React from 'react';
 import axiosInstance from '../axios/AxiosNetworkInterceptors';
 import configureStore from '../../store/ConfigureStore';
-import { verifyEmail, doLogin } from './AuthReducer'
+import { BrowserRouter as Router } from 'react-router-dom';
+import { verifyEmail, doLogin } from './AuthReducer';
+import { isAuthenticated } from '../../utils/utilities';
 
 export default class Auth extends React.Component {
 
     constructor(props) {
         super(props);
+        // onRefresh on auth
+        if(isAuthenticated()) {
+            this.navigateToGamesPage();
+        }
         this.state = {
             data: {},
             email: undefined,
@@ -17,8 +23,13 @@ export default class Auth extends React.Component {
             errorMsg: this.props ? this.props.errorMsg : undefined,
             isError: undefined
         }
-        
+
         this.store = configureStore();
+        // onStore update
+        this.onStoreUpdate();
+    }
+
+    onStoreUpdate() {
         this.store.subscribe(() => {
             const updateState = this.store.getState();
             const authDetails = updateState.authDetails;
@@ -31,6 +42,14 @@ export default class Auth extends React.Component {
                 isEmailVerified: authDetails.isEmailVerified,
                 isPasswordVerified: authDetails.isPasswordVerified
             }));
+            if (authDetails.isPasswordVerified) {
+                const token = authDetails.data.authentication.onehuddletoken;
+                console.log('Token: ', token);
+                if (token.trim()) {
+                    this.passwordVerifiedSuccessfully(token);
+                    this.navigateToGamesPage();
+                }
+            }
         });
     }
 
@@ -88,7 +107,10 @@ export default class Auth extends React.Component {
 
     passwordVerifiedSuccessfully(token) {
         localStorage.setItem("token", token);
-        window.location.reload();
+    }
+
+    navigateToGamesPage() {
+        this.props.history.push('/games');
     }
 
     render() {

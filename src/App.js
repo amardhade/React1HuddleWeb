@@ -20,18 +20,14 @@ export default class App extends React.Component {
         <div>
           <Switch>
             {
-              !this.isAuthentication() && <Route path='/' component={Auth} />
+              <Route path='/' component={Auth} exact={true} />
             }
             {
-              this.isAuthentication() && <Route path='/' component={Games} />
+              <Route path='/games' component={Games} />
             }
           </Switch>
         </div>
       </BrowserRouter>
     );
-  }
-
-  isAuthentication() {
-    return localStorage.getItem("token");
   }
 }

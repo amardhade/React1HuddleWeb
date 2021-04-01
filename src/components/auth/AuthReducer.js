@@ -20,7 +20,7 @@ export function doLogin(payload) {
 
 
 const authReducerDefaultState = {
-    data: {},
+    player: {},
     isFetchingDetails: false,
     errorMsg: undefined,
     isError: false
@@ -48,15 +48,16 @@ const authReducer = (state = authReducerDefaultState, action) => {
         case ActionType.EMAIL_VERIFICATION_FAILED:
             return {
                 ...state,
-                data: action.response.data.data,
+                data: null,
                 isFetchingDetails: false,
                 isError: true,
-                errorMsg: action.response.data.message
+                errorMsg: "Email not registred"
             }
          case ActionType.PWD_VERIFICATION_SUCCESS:
             return {
                 ...state,
                 data: action.response.data.data,
+                player: action.response.data.data.player,
                 isFetchingDetails: false,
                 isError: false,
                 errorMsg: undefined,
@@ -65,10 +66,10 @@ const authReducer = (state = authReducerDefaultState, action) => {
         case ActionType.PWD_VERIFICATION_FAILED:
             return {
                 ...state,
-                data: action.response.data.data,
+                data: null,
                 isFetchingDetails: false,
                 isError: true,
-                errorMsg: action.response.data.message,
+                errorMsg: "Invalid password",
                 isPasswordVerified: false
             }
         default:
