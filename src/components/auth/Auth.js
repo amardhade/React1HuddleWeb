@@ -15,6 +15,7 @@ export default class Auth extends React.Component {
         }
         this.state = {
             data: {},
+            player: {},
             email: undefined,
             password: undefined,
             isEmailVerified: this.props ? this.props.isEmailVerified : false,

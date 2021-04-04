@@ -19,12 +19,7 @@ export function doLogin(payload) {
 }
 
 
-const authReducerDefaultState = {
-    player: {},
-    isFetchingDetails: false,
-    errorMsg: undefined,
-    isError: false
-};
+const authReducerDefaultState = {};
 const authReducer = (state = authReducerDefaultState, action) => {
     console.log('authReducer STATE: ', state);
     console.log('Action: ', action);
@@ -55,7 +50,6 @@ const authReducer = (state = authReducerDefaultState, action) => {
             }
          case ActionType.PWD_VERIFICATION_SUCCESS:
             return {
-                ...state,
                 data: action.response.data.data,
                 player: action.response.data.data.player,
                 isFetchingDetails: false,

@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as APIConstants from '../../variables/APIConstants';
+import { getToken } from '../../utils/utilities';
 
 const TIMEOUT = 5000
 const isHandlerEnabled = (config = {}) => {
@@ -42,7 +43,8 @@ const axiosInstance = axios.create({
         'api-key': 'G9w0BAQsFADAxMS8wLQYDVQQDEyZREFF',
         'api-secret': 'FADA0MTIwMAYDVQQDEylBREZTITEDCVB',
         'locale': 'en',
-        'platform': 'WebApp'
+        'platform': 'WebApp',
+        'session-token': getToken() 
     }
 });
 

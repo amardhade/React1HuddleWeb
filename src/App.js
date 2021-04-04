@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Switch, Link, NavLink } from "react-router-dom";
-import Games from './components/Games';
+import Games from './components/games/Games';
 import Auth from './components/auth/Auth';
 
 export default class App extends React.Component {

@@ -1,14 +1,16 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import authReducer from '../components/auth/AuthReducer';
-import thunkMiddleware from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import gameReducer from '../components/games/GamesReducer';
+import thunkMiddleware from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const reduxMiddleware = composeWithDevTools(applyMiddleware(thunkMiddleware));
 
 const configureStore = () => {
     const store = createStore(
         combineReducers({
-            authDetails: authReducer
+            authDetails: authReducer,
+            gamesReducers: gameReducer
         }),
         reduxMiddleware
     )
