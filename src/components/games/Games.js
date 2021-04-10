@@ -3,6 +3,7 @@ import { isAuthenticated } from '../../utils/utilities';
 import GameListItem from './GameListItem';
 import { fetchGames } from './GamesReducer';
 import configureStore from '../../store/ConfigureStore';
+import { connect } from 'react-redux';
 
 
 export default class Games extends React.Component {
@@ -10,16 +11,20 @@ export default class Games extends React.Component {
         super(props);
         if (!isAuthenticated()) {
             this.navigateToAuthPage();
+            return;
         }
         this.store = configureStore();
         this.state = {
-            games: this.props ? this.props.games : [],
-            fetchingGames: this.props ? this.props.fetchingGames : false,
-            fetchingGamesSuccess: this.props ? this.props.fetchingGamesSuccess : false,
-            fetchingGamesError: this.props ? this.props.fetchingGamesError : false,
-            errorMsg: this.props ? this.props.errorMsg : undefined
+            games: [],
+            fetchingGames: false,
+            fetchingGamesSuccess: false,
+            fetchingGamesError: false,
+            errorMsg: undefined
         }
         this.onStoreUpdate();
+    }
+    
+    componentDidMount() {
         this.getGames();
     }
 
@@ -28,6 +33,7 @@ export default class Games extends React.Component {
             const updateState = this.store.getState();
             console.log('Updated state: ', updateState);
             this.setState(() => ({
+                fetchingGames: updateState.gamesReducers.fetchingGames,
                 games: updateState.gamesReducers.games
             }));
         });
@@ -45,14 +51,13 @@ export default class Games extends React.Component {
         return (
             <div>
                 <p>Games Component</p>
+                {this.state.fetchingGames && <p>Fetching games..</p>}
                 <div className="gamesWrapper">
                     <div className="gameWrapper">
                         {this.state.games && this.state.games.map((game, gameIndex) => <GameListItem {...game} key={game.game_id} />)}
                     </div>
                 </div>
             </div>
-
-
         )
     }
 }

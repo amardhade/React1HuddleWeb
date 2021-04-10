@@ -26,10 +26,8 @@ const errorHandler = (error) => {
 
 //Request handler
 const requestHandler = (request) => {
-    console.log('isHandlerEnabled: ', isHandlerEnabled(request))
     if (isHandlerEnabled(request)) {
         //   request.headers['X-CodePen'] = 'https://codepen.io/teroauralinna/full/vPvKWe'
-        console.log("Sending request");
     }
     return request
 }
