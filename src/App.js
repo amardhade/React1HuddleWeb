@@ -4,6 +4,8 @@ import './App.css';
 import { BrowserRouter, Route, Switch, Link, NavLink } from "react-router-dom";
 import Games from './components/games/Games';
 import Auth from './components/auth/Auth';
+import GamePreview from './components/gamePreview/GamePreview';
+import GameListItem from './components/games/GameListItem';
 
 export default class App extends React.Component {
   
@@ -23,7 +25,10 @@ export default class App extends React.Component {
               <Route path='/' component={Auth} exact={true} />
             }
             {
-              <Route path='/games' component={Games} />
+              <Route path='/games' component={Games} exact={true}/>
+            }
+            {
+              <Route path='/games/:game_id' component={Games} exact={true}/>
             }
           </Switch>
         </div>

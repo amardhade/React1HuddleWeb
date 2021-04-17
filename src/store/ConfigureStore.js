@@ -11,7 +11,7 @@ const configureStore = () => {
         combineReducers({
             authDetails: authReducer,
             gamesReducers: gameReducer
-        }),
+        }), 
         reduxMiddleware
     )
     return store;

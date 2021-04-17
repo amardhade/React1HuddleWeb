@@ -30,7 +30,6 @@ const gameReducer = (games = defaultGames, action) => {
             }
         case ActionType.GAMES_FETCHING_ERROR:
             return {
-                games: null,
                 fetchingGames: false,
                 fetchingGamesSuccess: false,
                 fetchingGamesError: true,
