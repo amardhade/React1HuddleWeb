@@ -4,8 +4,11 @@ import configureStore from '../../store/ConfigureStore';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { verifyEmail, doLogin } from './AuthReducer';
 import { isAuthenticated } from '../../utils/utilities';
+import { setToken, storePlayer } from '../../utils/StorageUtils';
 
 export default class Auth extends React.Component {
+
+    storeToUnsubscribe;
 
     constructor(props) {
         super(props);
@@ -31,7 +34,7 @@ export default class Auth extends React.Component {
     }
 
     onStoreUpdate() {
-        this.store.subscribe(() => {
+        this.storeToUnsubscribe = this.store.subscribe(() => {
             const updateState = this.store.getState();
             const authDetails = updateState.authDetails;
             console.log('Subscribe: ', authDetails);
@@ -45,10 +48,13 @@ export default class Auth extends React.Component {
             }));
             if (authDetails.isPasswordVerified) {
                 const token = authDetails.data.authentication.onehuddletoken;
-                console.log('Token: ', token);
+                const player = authDetails.data.player;
                 if (token.trim()) {
                     this.passwordVerifiedSuccessfully(token);
                     this.navigateToGamesPage();
+                }
+                if(player) {
+                    storePlayer(player);
                 }
             }
         });
@@ -107,7 +113,7 @@ export default class Auth extends React.Component {
     }
 
     passwordVerifiedSuccessfully(token) {
-        localStorage.setItem("token", token);
+        setToken(token);
     }
 
     navigateToGamesPage() {
@@ -133,5 +139,11 @@ export default class Auth extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    componentWillUnmount(){
+        // if(this.storeToUnsubscribe) {
+        //     this.storeToUnsubscribe.unsubscribe();
+        // } 
     }
 }

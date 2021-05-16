@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as APIConstants from '../../variables/APIConstants';
-import { getToken } from '../../utils/utilities';
+import { getToken } from '../../utils/StorageUtils';
 
 const TIMEOUT = 5000
 const isHandlerEnabled = (config = {}) => {

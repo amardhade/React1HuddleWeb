@@ -11,7 +11,7 @@ export function fetchGames() {
 
 
 const defaultGames = [];
-const gameReducer = (games = defaultGames, action) => {
+const gamesReducer = (games = defaultGames, action) => {
     switch (action.type) {
         case ActionType.GAMES_FETCHING_PROGRESS:
             return {
@@ -40,4 +40,4 @@ const gameReducer = (games = defaultGames, action) => {
     }
 }
 
-export default gameReducer;
+export default gamesReducer;

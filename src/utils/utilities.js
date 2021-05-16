@@ -1,7 +1,5 @@
-export function isAuthenticated() {
-    return localStorage.getItem("token") ? true : false;
-}
+import { getToken } from './StorageUtils';
 
-export function getToken(){
-    return localStorage.getItem("token") ? localStorage.getItem("token") : undefined;
+export function isAuthenticated() {
+    return getToken() ? true : false;
 }
