@@ -13,7 +13,6 @@ class GamePreview extends React.Component {
     buttonTitle = 'Play';
     constructor(props) {
         super(props);
-
         this.store = configureStore();
         this.state = {
             game: null,
@@ -32,7 +31,7 @@ class GamePreview extends React.Component {
                 this.store.dispatch(fetchGameDetails(this.props.game,
                     this.player.player_id, this.player.company_id));
             }
-            if(gameDetails.gameReducer.catrgories) {
+            if (gameDetails.gameReducer.catrgories) {
                 this.props.game.catrgories = gameDetails.gameReducer.catrgories
             }
             this.setState(() => ({
@@ -59,9 +58,7 @@ class GamePreview extends React.Component {
     }
 
     getButtonTitle() {
-        if (this.state.creatingGameSession) {
-            return this.buttonTitle = "Creating session..";
-        } else if (this.state.fetchingGameDetails) {
+        if (this.state.creatingGameSession || this.state.fetchingGameDetails) {
             return this.buttonTitle = "Fetching game details..";
         }
         return 'Play';
@@ -70,22 +67,27 @@ class GamePreview extends React.Component {
     render() {
         const game = this.props.game;
         console.log('Selected game: ', game);
+        if(game && !game.catrgories) {
+            game.catrgories = [];
+        }
         return (
-            <div className="gamePreviewWrapper"> { game &&
-                <div className="gamePreviewSubWrapper">
-                    <div className="gameWrpper">
-                        <div className="gameBasicInfo">
-                            <img className="gameLogo" src={game.game_logo} />
-                            <p className="gameName">{game.game_name}</p>
+            <div className="gameWrapper">{game &&
+                <div className="gamePreviewWrapper"> {(game.catrgories && !game.catrgories.length) ?
+                    <div className="gamePreviewSubWrapper">
+                        <div className="gameWrpper">
+                            <div className="gameBasicInfo">
+                                <img className="gameLogo" src={game.game_logo} />
+                                <p className="gameName">{game.game_name}</p>
+                            </div>
+                            <div className="gameProfileInfo">{game.game_profile.length &&
+                                <GameProfile profile={game.game_profile[0]}></GameProfile>
+                            }</div>
                         </div>
-                        <div className="gameProfileInfo">{game.game_profile.length &&
-                            <GameProfile profile={game.game_profile[0]}></GameProfile>
-                        }</div>
-                    </div>
-                    <div className="playButtonWrapper">
-                        <button disabled={this.state.creatingGameSession || this.state.fetchingGameDetails} className="playBtn" onClick={this.playGame}>{this.getButtonTitle()}</button>
-                    </div>
-                </div>
+                        <div className="playButtonWrapper">
+                            <button disabled={this.state.creatingGameSession || this.state.fetchingGameDetails} className="playBtn" onClick={this.playGame}>{this.getButtonTitle()}</button>
+                        </div>
+                    </div> : <div className="gamePreviewSubWrapper"><p>Category Screen</p></div>
+                }</div>
             }</div>
 
         )

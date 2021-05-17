@@ -1,51 +1,56 @@
-.gamePreviewWrapper {
+.gameWrapper {
     width: 100%;
     height: 100%;
     background: darkgray;
-    .gamePreviewSubWrapper {
+    .gamePreviewWrapper {
         height: 100%;
-        position: relative;
-        .gameWrpper {
+        display: flex;
+        flex-direction: column;
+        .gamePreviewSubWrapper {
             height: 100%;
-            padding: 10px;
-            background: darkgray;
-            .gameBasicInfo {
-                display: flex;
-                align-items: center;
-                flex-direction: row;
-                padding: 8px;
-                .gameLogo {
-                    width: 70px;
-                    height: 70px;
-                    object-fit: cover;
-                    border-radius: 50%;
-                }
-                .gameName {
-                    margin: 0;
-                    padding: 0;
-                    font-size: 18px;
-                    margin-left: 10px;
+            position: relative;
+            .gameWrpper {
+                height: 100%;
+                padding: 10px;
+                background: darkgray;
+                .gameBasicInfo {
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                    padding: 8px;
+                    .gameLogo {
+                        width: 70px;
+                        height: 70px;
+                        object-fit: cover;
+                        border-radius: 50%;
+                    }
+                    .gameName {
+                        margin: 0;
+                        padding: 0;
+                        font-size: 18px;
+                        margin-left: 10px;
+                    }
                 }
             }
-        }
-        .gameProfileInfo {
-            display: flex;
-            overflow-y: auto;
-            height: calc(100% - 140px);
-        }
-        .playButtonWrapper {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            bottom: 0;
-            .playBtn {
-                padding: 10px;
-                font-size: 20px;
-                text-transform: uppercase;
-                outline: none;
-                border: none;
-                cursor: pointer;
+            .gameProfileInfo {
+                display: flex;
+                overflow-y: auto;
+                height: calc(100% - 140px);
+            }
+            .playButtonWrapper {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                bottom: 0;
+                .playBtn {
+                    padding: 10px;
+                    font-size: 20px;
+                    text-transform: uppercase;
+                    outline: none;
+                    border: none;
+                    cursor: pointer;
+                }
             }
         }
     }
