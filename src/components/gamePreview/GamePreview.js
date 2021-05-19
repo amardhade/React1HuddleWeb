@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import GameProfile from "../gameProfile/GameProfile";
+import GameCategory from "../gameCategory/GameCategory";
 import './GamePreview.scss';
 import { getPlayer } from "../../utils/StorageUtils";
 import { getGameSession, fetchGameDetails } from "./GameReducer"
@@ -86,7 +87,9 @@ class GamePreview extends React.Component {
                         <div className="playButtonWrapper">
                             <button disabled={this.state.creatingGameSession || this.state.fetchingGameDetails} className="playBtn" onClick={this.playGame}>{this.getButtonTitle()}</button>
                         </div>
-                    </div> : <div className="gamePreviewSubWrapper"><p>Category Screen</p></div>
+                    </div> : <div className="gamePreviewSubWrapper">
+                                <GameCategory nowPlayingGame={game} ></GameCategory>
+                            </div>
                 }</div>
             }</div>
 
