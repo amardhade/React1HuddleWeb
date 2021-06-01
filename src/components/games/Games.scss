@@ -5,6 +5,16 @@
     .header {
         width: 100%;
         height: fit-content;
+        background: blue;
+        color: white;
+        display: flex;
+        height: 48px;
+        align-items: center;
+        margin: 0;
+        font-size: 18px;
+        padding: 0;
+        font-weight: 600;
+        padding-left: 10px
     }
     .gamesWrapper {
         display: flex;
@@ -15,10 +25,29 @@
             flex: 1;
             overflow: scroll;
             height: 100%;
+            padding: 10px;
+            .gridItem {
+                width: 175px;
+                height: 90px;
+                padding: 10px;
+                cursor: pointer;
+                .gridContent {
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    .gameName {
+                        line-height: normal;
+                        letter-spacing: normal;
+                        color: black;
+                        text-decoration: none;
+                    }
+                }
+            }
         }
         .gameDetailsWrapper {
-            width: 40%;
             display: flex;
+            width: 30%;
         }
     }
 }
