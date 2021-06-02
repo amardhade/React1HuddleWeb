@@ -4,7 +4,7 @@ import GameProfile from "../gameProfile/GameProfile";
 import GameCategory from "../gameCategory/GameCategory";
 import './GamePreview.scss';
 import { getPlayer } from "../../utils/StorageUtils";
-import { getGameSession, fetchGameDetails } from "./GameReducer"
+import { createGameSession, getGameDetails } from './gameManager';
 import configureStore from '../../store/ConfigureStore';
 
 class GamePreview extends React.Component {
@@ -29,7 +29,7 @@ class GamePreview extends React.Component {
             console.log('Subscribe: ', gameDetails);
             if (gameDetails.gameReducer.gameSessionId) {
                 this.props.game.gameSessionId = gameDetails.gameReducer.gameSessionId
-                this.store.dispatch(fetchGameDetails(this.props.game,
+                this.store.dispatch(getGameDetails(this.props.game,
                     this.player.player_id, this.player.company_id));
             }
             if (gameDetails.gameReducer.catrgories) {
@@ -55,7 +55,7 @@ class GamePreview extends React.Component {
             mlg_id: 0,
             contest_id: 0
         }
-        this.store.dispatch(getGameSession(payload));
+        this.store.dispatch(createGameSession(payload));
     }
 
     getButtonTitle() {

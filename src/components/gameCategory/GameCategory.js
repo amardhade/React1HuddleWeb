@@ -26,7 +26,7 @@ class GameCategory extends React.Component {
                     </div>
                     <div className="gameCategorySection">
                         {this.props.nowPlayingGame.catrgories && this.props.nowPlayingGame.catrgories.map((category, categoryIndex) =>
-                            <Paper elevation={6} variant="outlined" squared className="category">
+                            <Paper key={categoryIndex} elevation={6} variant="outlined" squared className="category">
                                 <span className="categoryName">{category.category_name}</span>
                                 <div className="questionCountSection">
                                     <span className="emptyView"></span>
