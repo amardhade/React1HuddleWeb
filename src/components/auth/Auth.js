@@ -15,6 +15,7 @@ export default class Auth extends React.Component {
         // onRefresh on auth
         if(isAuthenticated()) {
             this.navigateToGamesPage();
+            return;
         }
         this.state = {
             data: {},

@@ -1,23 +1,17 @@
 import React from 'react';
 import { isAuthenticated } from '../../utils/utilities';
 import GameListItem from './GameListItem';
-import { fetchGames } from './GamesReducer';
 import configureStore from '../../store/ConfigureStore';
 import { connect } from 'react-redux';
+import { getGames } from './GamesManager';
 import GamePreview from '../gamePreview/GamePreview';
 import './Games.scss';
 import Grid from '@material-ui/core/Grid';
 
 
 class Games extends React.Component {
-    propsCopy;
     constructor(props) {
         super(props);
-        console.log('Games Ctor: ', props);
-        if(this.props) {
-            this.propsCopy = props;
-        }
-        console.log('propsCopy: ', this.propsCopy);
 
         if (!isAuthenticated()) {
             this.navigateToAuthPage();
@@ -36,7 +30,7 @@ class Games extends React.Component {
     }
 
     componentDidMount() {
-        this.getGames();
+        this.store.dispatch(getGames());
     }
 
     onStoreUpdate() {
@@ -50,31 +44,15 @@ class Games extends React.Component {
         });
     }
 
-    getGames() {
-        this.store.dispatch(fetchGames()).then((data) => {
-            console.log('Games received: ', data);
-        }).catch(error => {
-            console.log('Error: ', error);
-        })
-    }
-
     navigateToAuthPage() {
         this.props.history.push('/');
     }
 
-    // findGame = () => {
-    //     console.log('Find game: ', this.props.match.params.game_id);
-    //     return this.state.games.find((game) => game.game_id == this.props.match.params.game_id)
-    // }
-
-    handleGameClick(path) {
-        console.log('clickedGame: ', path);
-        console.log('propsCopy: ', this.propsCopy);
-        // this.props.history.push(path);
-    }
-
     render() {
-        console.log('Render from Games: ', this.props);
+        console.log('Render from Games: ', this.state);
+        if(!this.state) {
+            return null
+        }
         return (
             <div className="mainWrapper">
                 <p className="header">1Huddle Games</p>
@@ -85,7 +63,7 @@ class Games extends React.Component {
                         <Grid container spacing={2}>
                             {this.state.games && this.state.games.map((game) => (
                                 <Grid key={game.game_id} item>
-                                    <GameListItem game={game} key={game.game_id} handleGameClick={this.handleGameClick} />
+                                    <GameListItem game={game} key={game.game_id} history={this.props.history} />
                                 </Grid>
                             ))}
                         </Grid>
@@ -102,7 +80,6 @@ class Games extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-    console.log('mapStateToProps Games: ', state.games);
     return {
         games: state.games,
         fetchingGames: state.fetchingGames,

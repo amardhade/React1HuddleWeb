@@ -2,26 +2,28 @@ import axios from 'axios';
 import axiosInstance from './AxiosNetworkInterceptors';
 
 
-const handleSuccess = (response, dispatch, actionTypeSuccess, actionTypeError) => {
+const handleSuccess = (response) => {
+    console.log('handleSuccess: ', response);
     if (response.data.success) {
-        dispatch({ type: actionTypeSuccess, response });
+        return response
     } else {
-        dispatch({ type: actionTypeError, response })
+        return handleError(response)
     }
 }
 
-const handleError = (error, dispatch, actionTypeError) => {
-    dispatch({ type: actionTypeError, error })
+const handleError = (response) => {
+    console.log('handleError: ', response);
+    return response;
 }
 
 export const post = (path, payload, dispatch, actionTypeSuccess, actionTypeError) => {
     axiosInstance.post(path, payload)
-        .then((response) => { handleSuccess(response, dispatch, actionTypeSuccess, actionTypeError) })
-        .catch((error) => { handleError(error, dispatch, actionTypeError) })
+        .then((response) => { handleSuccess(response) })
+        .catch((error) => { handleError(error) })
 };
 
 export const get = (path, dispatch, actionTypeSuccess, actionTypeError) => {
-    axiosInstance.get(path)
-        .then((response) => { handleSuccess(response, dispatch, actionTypeSuccess, actionTypeError) })
-        .catch((error) => { handleError(error, dispatch, actionTypeError) })
+    return axiosInstance.get(path)
+        .then((response) => { return handleSuccess(response) })
+        .catch((error) => {  return handleError(error) })
 };
