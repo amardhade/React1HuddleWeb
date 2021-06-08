@@ -4,26 +4,29 @@ import axiosInstance from './AxiosNetworkInterceptors';
 
 const handleSuccess = (response) => {
     console.log('handleSuccess: ', response);
-    if (response.data.success) {
-        return response.data;
-    } else {
-        return handleError(response)
-    }
+    return response;
 }
 
 const handleError = (response) => {
     console.log('handleError: ', response);
+    // ToDo Show error notification
     return response;
 }
 
 export const post = (path, payload) => {
     return axiosInstance.post(path, payload)
-        .then((response) => { return handleSuccess(response) })
+        .then((response) => {
+            if (response.data.success) { return handleSuccess(response.data) }
+            else { return handleError(response.data) }
+        })
         .catch((error) => { return handleError(error) })
 };
 
 export const get = (path) => {
     return axiosInstance.get(path)
-        .then((response) => { return handleSuccess(response) })
-        .catch((error) => {  return handleError(error) })
+        .then((response) => {
+            if (response.data.success) { return handleSuccess(response.data) }
+            else { return handleError(response.data) }
+        })
+        .catch((error) => { return handleError(error) })
 };

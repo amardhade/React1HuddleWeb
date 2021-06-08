@@ -3,13 +3,13 @@ import * as APIConstants from '../../variables/APIConstants';
 import * as ActionType from '../../variables/ActionType';
 
 
-export function verifyEmail(email) {
-    return async function verifyEmailThunk(dispatch, getState) {
-        dispatch({ type: ActionType.EMAIL_VERIFICATION_PROGRESS })
-        const payload = { email };
-        await OHAxios.post(APIConstants.VERIFY_EMAIL, payload, dispatch, ActionType.EMAIL_VERIFICATION_SUCCESS, ActionType.EMAIL_VERIFICATION_FAILED);
-    }
-}
+// export function verifyEmail(email) {
+//     return async function verifyEmailThunk(dispatch, getState) {
+//         dispatch({ type: ActionType.EMAIL_VERIFICATION_PROGRESS })
+//         const payload = { email };
+//         await OHAxios.post(APIConstants.VERIFY_EMAIL, payload, dispatch, ActionType.EMAIL_VERIFICATION_SUCCESS, ActionType.EMAIL_VERIFICATION_FAILED);
+//     }
+// }
 
 export function doLogin(payload) {
     return async function doLoginHunk(dispatch, getState) {
@@ -31,10 +31,9 @@ const authReducer = (state = authReducerDefaultState, action) => {
                 isFetchingDetails: true
             }
         case ActionType.EMAIL_VERIFICATION_SUCCESS:
-            const successData = action.response.data;
             return {
                 ...state,
-                data: successData.data,
+                data: action.data,
                 isFetchingDetails: false,
                 isError: false,
                 errorMsg: undefined,
@@ -50,8 +49,8 @@ const authReducer = (state = authReducerDefaultState, action) => {
             }
          case ActionType.PWD_VERIFICATION_SUCCESS:
             return {
-                data: action.response.data.data,
-                player: action.response.data.data.player,
+                data: action.data,
+                player: action.player,
                 isFetchingDetails: false,
                 isError: false,
                 errorMsg: undefined,

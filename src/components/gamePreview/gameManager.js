@@ -22,7 +22,7 @@ export const createGameSession = (payload) => {
     return async (dispatch, getState) => {
         try {
             dispatch(createGameSessionInprogress());
-            await OHAxios.post(APIConstants.CREATING_GAME_SESSION, payload, null, null, null)
+            await OHAxios.post(APIConstants.CREATING_GAME_SESSION, payload)
                 .then((response) => {
                     console.log('Data: ', response);
                     const gameSessionId = response.data.game_session_id;

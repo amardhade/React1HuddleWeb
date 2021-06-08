@@ -2,7 +2,8 @@ import React from 'react';
 import axiosInstance from '../axios/AxiosNetworkInterceptors';
 import configureStore from '../../store/ConfigureStore';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { verifyEmail, doLogin } from './AuthReducer';
+// import { verifyEmail, doLogin } from './AuthReducer';
+import { verifyEmail, doLogin } from './AuthManager';
 import { isAuthenticated } from '../../utils/utilities';
 import { setToken, storePlayer } from '../../utils/StorageUtils';
 
@@ -104,7 +105,7 @@ export default class Auth extends React.Component {
         }
         this.setState(() => ({ isError: undefined }))
         console.log('verifuing email: ', email)
-        this.store.dispatch(verifyEmail({ email }))
+        this.store.dispatch(verifyEmail(email))
     }
 
     updateState(emailVeriifed) {
