@@ -58,6 +58,33 @@
             }
         }
     }
+    .gameFooter {
+        display: flex;
+        justify-content: center;
+        ._gameFooter {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            .endGame {
+                font-size: 23px;
+                width: 100%;
+            }
+        }
+        .__gameFooter {
+            display: flex;
+            flex: 1;
+            justify-content: space-around;
+            .back {
+                font-size: 1em;
+                width: 50%;
+            }
+            .next {
+                font-size: 1em;
+                width: 50%;
+            }
+        }
+        
+    }
 }
 
 .normalText {
