@@ -7,6 +7,7 @@
         height: 100%;
         .gameHeaderSection {
             border-bottom: 1px solid lightgrey;
+            height: 17%;
             .gameHeaderSectionPage {
                 padding: 8px;
                 .gameInfo1 {
@@ -32,9 +33,8 @@
         }
         .gameCategorySection {
             flex: 1;
-            height: 100%;
-            padding: 10px;
-            padding-top: 0px;
+            height: 83%;
+            padding: 0 10px;
             .category {
                 display: flex;
                 flex-direction: column;
@@ -43,6 +43,7 @@
                 justify-content: space-between;
                 cursor: pointer;
                 margin-top: 10px;
+                border: 1px solid lightgray;
                 .categoryName {
                     color: black;
                     font-weight: 600;
@@ -55,36 +56,42 @@
                         font-weight: 500;
                     }
                 }
+            }:hover{
+                background: #f1f1f1;
             }
+        }
+        .gameQuestionSection {
+            height: 83%;
         }
     }
-    .gameFooter {
-        display: flex;
-        justify-content: center;
-        ._gameFooter {
-            display: flex;
-            flex: 1;
-            justify-content: center;
-            .endGame {
-                font-size: 23px;
-                width: 100%;
-            }
-        }
-        .__gameFooter {
-            display: flex;
-            flex: 1;
-            justify-content: space-around;
-            .back {
-                font-size: 1em;
-                width: 50%;
-            }
-            .next {
-                font-size: 1em;
-                width: 50%;
-            }
-        }
+    // .gameFooter {
+    //     display: flex;
+    //     justify-content: center;
+    //     border: 1px solid lightgray;
+    //     ._gameFooter {
+    //         display: flex;
+    //         flex: 1;
+    //         justify-content: center;
+    //         .endGame {
+    //             font-size: 23px;
+    //             width: 100%;
+    //         }
+    //     }
+    //     .__gameFooter {
+    //         display: flex;
+    //         flex: 1;
+    //         justify-content: space-around;
+    //         .back {
+    //             font-size: 1em;
+    //             width: 50%;
+    //         }
+    //         .next {
+    //             font-size: 1em;
+    //             width: 50%;
+    //         }
+    //     }
         
-    }
+    // }
 }
 
 .normalText {

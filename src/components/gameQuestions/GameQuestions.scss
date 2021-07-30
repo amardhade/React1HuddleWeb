@@ -1,0 +1,74 @@
+.questionWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .questionHeader {
+        height: 90%;
+        .categoryTitleWrapper {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 8px;
+            .categoryTitle {
+                font-weight: 600;
+            }
+            .questionCountWrapper {
+
+            }
+        }
+        .questionSection {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: calc(100% - 36px);
+            overflow: auto;
+            .question {
+                display: flex;
+                flex-direction: column;
+                .questionTitle {
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    padding: 2px 4px;
+                    min-height: 48px;
+                }
+                .questionImage {
+                    height: 200px;
+                    object-fit: cover;
+                    margin: 10px;
+                    border: 1px solid #f1f1f1;
+                }
+            }
+            .answerOptions {
+                padding: 4px;
+                margin: 10px 0 5px;
+                .ansOption {
+                    .ans {
+                        display: flex;
+                        justify-content: center;
+                        font-size: 25px;
+                        padding: 8px;
+                        border: 1px solid lightgrey;
+                        border-radius: 2px;
+                        margin: 8px 0;
+                        cursor: pointer;
+                    }:hover{
+                        background: #f1f1f1;
+                    }
+                }
+            }
+        }
+    }
+    .questionFooter {
+        display: flex;
+        flex: 1;
+        justify-content: space-around;
+        .previous {
+            font-size: 1em;
+            width: 50%;
+        }
+        .next {
+            font-size: 1em;
+            width: 50%;
+        }
+    }
+}

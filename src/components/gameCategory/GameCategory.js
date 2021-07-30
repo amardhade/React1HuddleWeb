@@ -1,24 +1,28 @@
 import './GameCategory.scss';
 import React from "react";
 import { Avatar, Button, Paper } from '@material-ui/core';
+import GameQuestion from '../gameQuestions/GameQuestions';
 class GameCategory extends React.Component {
 
     state = {
-        shouldShowQuestions: false
+        shouldShowQuestions: false,
+        selectedCategory: null
     }
 
     constructor(props) {
         super(props)
         console.log('nowPlayingGame: ', this.props.nowPlayingGame);
         this.state = {
-            shouldShowQuestions: false
+            shouldShowQuestions: false,
+            selectedCategory: null
         }
     }
 
-    showQuestions = () => {
-        console.log('handleCategoryClick');
+    showQuestions = (category) => {
+        console.log('handleCategoryClick: ' + category);
         this.setState(() => ({
-            shouldShowQuestions: true
+            shouldShowQuestions: true,
+            selectedCategory: category
         }))
     }
 
@@ -28,13 +32,13 @@ class GameCategory extends React.Component {
         }))
     }
 
-    nextQuestion = () => {
-        console.log("Next Question")
-    }
+    // nextQuestion = () => {
+    //     console.log("Next Question")
+    // }
 
-    endGame = () => {
-        console.log("End game")
-    }
+    // endGame = () => {
+    //     console.log("End game")
+    // }
 
     render() {
         return (
@@ -55,31 +59,15 @@ class GameCategory extends React.Component {
                     {!this.state.shouldShowQuestions ?
                         <div className="gameCategorySection">
                             {this.props.nowPlayingGame.catrgories && this.props.nowPlayingGame.catrgories.map((category, categoryIndex) =>
-                                <Paper key={categoryIndex} elevation={6} variant="outlined" className="category" onClick={() => this.showQuestions({})}>
+                                <Paper key={categoryIndex} elevation={6} variant="outlined" className="category" onClick={() => this.showQuestions(category)}>
                                     <span className="categoryName">{category.category_name}</span>
                                     <div className="questionCountSection">
                                         <span className="emptyView"></span>
                                         <span className="questionCount">{category.questions.length}</span>
                                     </div>
                                 </Paper>)}
-                        </div> : <div>
-                            <span>Show Questions</span>
-                        </div>
-                    }
-                </div>
-                <div>
-                    {this.state.shouldShowQuestions ?
-                        <div className="gameFooter">
-                            <div className="__gameFooter">
-                                <Button className="back" onClick={() => this.showCategories()}>Back</Button>
-                                <Button className="next" onClick={() => this.nextQuestion()}>Next</Button>
-                            </div>
-                        </div>
-                        :
-                        <div className="gameFooter">
-                            <div className="_gameFooter">
-                                <Button className="endGame" onClick={() => this.endGame()}>End Game</Button>
-                            </div>
+                        </div> : <div className="gameQuestionSection">
+                            <GameQuestion game={this.props.nowPlayingGame} clickedCategory={this.state.selectedCategory}></GameQuestion>
                         </div>
                     }
                 </div>
