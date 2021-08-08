@@ -51,9 +51,10 @@
                         border-radius: 2px;
                         margin: 8px 0;
                         cursor: pointer;
-                    }:hover{
-                        background: #f1f1f1;
                     }
+                }.correctAns {
+                    background: green;
+                    color: white;
                 }
             }
         }
