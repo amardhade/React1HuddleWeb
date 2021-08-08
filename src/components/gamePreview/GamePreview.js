@@ -6,6 +6,8 @@ import './GamePreview.scss';
 import { getPlayer } from "../../utils/StorageUtils";
 import { createGameSession, getGameDetails } from './gameManager';
 import configureStore from '../../store/ConfigureStore';
+import GameContext from "../../context/GameContext";
+import Categories from "../gameCategory/Categories";
 
 class GamePreview extends React.Component {
 
@@ -68,7 +70,7 @@ class GamePreview extends React.Component {
     render() {
         const game = this.props.game;
         console.log('Selected game: ', game);
-        if(game && !game.catrgories) {
+        if (game && !game.catrgories) {
             game.catrgories = [];
         }
         return (
@@ -87,9 +89,9 @@ class GamePreview extends React.Component {
                         <div className="playButtonWrapper">
                             <button disabled={this.state.creatingGameSession || this.state.fetchingGameDetails} className="playBtn" onClick={this.playGame}>{this.getButtonTitle()}</button>
                         </div>
-                    </div> : <div className="gamePreviewSubWrapper">
-                                <GameCategory nowPlayingGame={game} ></GameCategory>
-                            </div>
+                    </div> : <GameContext.Provider value={{game}} className="gamePreviewSubWrapper">
+                        <Categories></Categories>
+                    </GameContext.Provider>
                 }</div>
             }</div>
 

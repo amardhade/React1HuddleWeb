@@ -35,14 +35,7 @@ class GameQuestion extends React.Component {
         })
     }
 
-    getAllQuestions() {
-        var questions = [];
-        this.props.game.catrgories.map((category) => {
-            const catQuestions = this.mapCategoryDetailsToQuestion(category);
-            questions.push(...catQuestions)
-        });
-        return questions;
-    }
+    
 
     mapCategoryDetailsToQuestion(category) {
         let questions = category.questions.map((question) => {

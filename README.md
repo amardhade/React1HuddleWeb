@@ -1,3 +1,13 @@
+# 1st_cycle
+React, React component, Network layer, Error handing
+Auth module, Game list module, Handling network related stuffs.
+
+# 2nd_cycle
+React Material, Redux, Store, Game play part
+
+# 3rd_cycle
+Hooks, 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
