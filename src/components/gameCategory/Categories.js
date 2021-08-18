@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import GameContext from '../../context/GameContext';
 import Questions from '../gameQuestions/Questions';
 import './GameCategory.scss';
+import questionReducer from "../../reducer/question";
 import { Avatar, Button, Paper } from '@material-ui/core';
 
 const Categories = () => {
 
+    const [questions, questionDispatch] = useReducer(questionReducer)
     const { game } = useContext(GameContext);
-    console.log('game: ', game);
     const [shouldShowQuestions, setshouldShowQuestions] = useState(false);
 
+    
     const showQuestions = (category) => {
         setshouldShowQuestions(true)
     }
@@ -31,7 +33,7 @@ const Categories = () => {
                 </div>
                 {!shouldShowQuestions ?
                     <div className="gameCategorySection">
-                        {game.catrgories && game.catrgories.map((category, categoryIndex) =>
+                        {game.categories && game.categories.map((category, categoryIndex) =>
                             <Paper key={categoryIndex} elevation={6} variant="outlined" className="category" onClick={() => showQuestions(category)}>
                                 <span className="categoryName">{category.category_name}</span>
                                 <div className="questionCountSection">

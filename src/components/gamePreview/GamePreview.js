@@ -1,10 +1,10 @@
-import React from "react";
+import React, {useReducer} from "react";
 import { connect } from "react-redux";
 import GameProfile from "../gameProfile/GameProfile";
 import GameCategory from "../gameCategory/GameCategory";
 import './GamePreview.scss';
 import { getPlayer } from "../../utils/StorageUtils";
-import { createGameSession, getGameDetails } from './gameManager';
+import { getGameDetails } from './gameManager';
 import configureStore from '../../store/ConfigureStore';
 import GameContext from "../../context/GameContext";
 import Categories from "../gameCategory/Categories";
@@ -57,7 +57,7 @@ class GamePreview extends React.Component {
             mlg_id: 0,
             contest_id: 0
         }
-        this.store.dispatch(createGameSession(payload));
+        // this.store.dispatch(createGameSession(payload));
     }
 
     getButtonTitle() {

@@ -26,8 +26,12 @@ export const getGames = () => {
             dispatch(fetchingGames());
             await OHAxios.get(APIConstants.GET_GAMES)
             .then((response) => {
-                const games = response.data.games;
-                dispatch(fetchingGamesSuccess(games));
+                if(response.success) {
+                    const games = response.data.games;
+                    dispatch(fetchingGamesSuccess(games));
+                } else {
+                    dispatch(fetchingGamesError(response));
+                }
             })
             .error((error) => { dispatch(fetchingGamesError(error)); })
         } catch(error) {}

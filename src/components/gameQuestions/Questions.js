@@ -13,10 +13,11 @@ const Questions = () => {
     let [points, setPoints] = useState(0); // Default 0
     const [selectedIndex, setSelectedIndex] = useState(-1);
     // const [wrongOption, setWrongOption] = useState('');
+    console.log('Game: ', game);    
 
     const getAllQuestions = () => {
         var allQuestions = [];
-        game.catrgories.map((category) => {
+        game.categories.map((category) => {
             const catQuestions = mapCategoryDetailsToQuestion(category);
             if (catQuestions && catQuestions.length) {
                 catQuestions.map((catQuestion) => {
@@ -27,7 +28,7 @@ const Questions = () => {
         setQuestions(allQuestions);
         console.log('allQuestions: ', allQuestions);
         // Set 1st Question
-        if (allQuestions && questionIndex < allQuestions.length - 1) {
+        if (allQuestions && questionIndex <= allQuestions.length - 1) {
             setQuestion(allQuestions[questionIndex]);
         }
     }

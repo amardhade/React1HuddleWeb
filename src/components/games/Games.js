@@ -4,7 +4,7 @@ import GameListItem from './GameListItem';
 import configureStore from '../../store/ConfigureStore';
 import { connect } from 'react-redux';
 import { getGames } from './GamesManager';
-import GamePreview from '../gamePreview/GamePreview';
+import GamePreview from '../gamePreview/Preview';
 import './Games.scss';
 import Grid from '@material-ui/core/Grid';
 
@@ -71,7 +71,7 @@ class Games extends React.Component {
                     {!this.state.fetchingGames
                         && this.props.match.params.game_id
                         && <div className="gameDetailsWrapper">
-                            <GamePreview games={this.state.games} gameId={this.props.match.params.game_id}></GamePreview>
+                            <GamePreview game={this.state.games.filter((game) => this.props.match.params.game_id == game.game_id )[0]}></GamePreview>
                         </div>}
                 </div>
             </div>
