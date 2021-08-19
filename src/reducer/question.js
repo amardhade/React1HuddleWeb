@@ -1,20 +1,26 @@
 import * as ActionType from '../variables/ActionType';
 
 const questionReducer = (question, action) => {
-    switch(action.type) {
-        case ActionType.PREPARE_QUESTIONS:
-            return
+    console.log('Question Reducer: ', action);
+    switch (action.type) {
+        case ActionType.SET_QUESTION:
+            return {
+                question: { ...action.nowShowingQuestion }
+            }
         case ActionType.NEXT_QUESTION:
             return
         case ActionType.PREVIOUS_QUESTION:
-            return         
-        case ActionType.ATTEMPTED_CORRECTLY:
             return
+        case ActionType.QUESTION_ATTEMPTED:
+            return {
+                question: { ...action.nowShowingQuestion },
+                updateQuestionsSet: true
+            }
         case ActionType.ATTEMPTED_INCORRECTLY:
-            return    
+            return
         default:
             return question || {};
     }
 }
 
-export {questionReducer as default}
+export { questionReducer as default }

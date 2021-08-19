@@ -15,7 +15,6 @@ export const creatingGameSession = (player, game, dispatch) => {
         mlg_id: 0,
         contest_id: 0
     }
-    console.log('Payload: ', payload, " gameDispatcher: ", dispatch);
     try {
         dispatch({ type: ActionType.CREATING_GAME_SESSION });
         OHAxios.post(APIConstants.CREATING_GAME_SESSION, payload)
@@ -33,34 +32,6 @@ export const creatingGameSession = (player, game, dispatch) => {
             })
     } catch { }
 }
-
-// export const createGameSessionSuccess = (gameSessionId) => ({
-//     type: ActionType.CREATING_GAME_SESSION_SUCCESS,
-//     gameSessionId
-// })
-
-// export const createGameSessionFailed = (error) => ({
-//     type: ActionType.CREATING_GAME_SESSION_FAILED,
-//     error
-// })
-
-// export const getGameDetailsInprogress = () => ({
-//     type: ActionType.FETCHINNG_GAME_CATEGORIES,
-//     gameCategories: undefined
-// })
-
-// export const getGameDetailsSuccess = (gameCategories) => ({
-//     type: ActionType.FETCHINNG_GAME_CATEGORIES_SUCCESS,
-//     gameCategories,
-//     error: undefined
-// })
-
-// export const getGameDetailsFailed = (error) => ({
-//     type: ActionType.FETCHINNG_GAME_CATEGORIES_FAILED,
-//     gameCategories: undefined,
-//     error
-// })
-
 
 export const getGameDetails = (game, playerId, companyId, dispatch) => {
     try {

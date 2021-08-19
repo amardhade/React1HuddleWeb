@@ -7,11 +7,9 @@ import { Avatar, Button, Paper } from '@material-ui/core';
 
 const Categories = () => {
 
-    const [questions, questionDispatch] = useReducer(questionReducer)
     const { game } = useContext(GameContext);
     const [shouldShowQuestions, setshouldShowQuestions] = useState(false);
 
-    
     const showQuestions = (category) => {
         setshouldShowQuestions(true)
     }

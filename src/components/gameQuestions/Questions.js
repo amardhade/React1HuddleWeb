@@ -1,127 +1,51 @@
-import React, { userState, useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useReducer } from 'react';
 import { Typography, Button } from '@material-ui/core';
 import './GameQuestions.scss';
 import GameContext from '../../context/GameContext';
-import classNames from 'classnames';
+import { getAllQuestions, canGoNext, canGoPrevious, questionAttempted } from './questionManager';
+import questionReducer from '../../reducer/question';
+import * as ActionType from '../../variables/ActionType';
+import update from 'immutability-helper';
 
 const Questions = () => {
 
     const { game } = useContext(GameContext);
     const [questions, setQuestions] = useState([]); // Default empty
-    const [question, setQuestion] = useState({}); // Default undefined
     let [questionIndex, setQuestionIndex] = useState(0); // Default 0
     let [points, setPoints] = useState(0); // Default 0
     const [selectedIndex, setSelectedIndex] = useState(-1);
-    // const [wrongOption, setWrongOption] = useState('');
-    console.log('Game: ', game);    
-
-    const getAllQuestions = () => {
-        var allQuestions = [];
-        game.categories.map((category) => {
-            const catQuestions = mapCategoryDetailsToQuestion(category);
-            if (catQuestions && catQuestions.length) {
-                catQuestions.map((catQuestion) => {
-                    allQuestions.push(catQuestion)
-                })
-            }
-        });
-        setQuestions(allQuestions);
-        console.log('allQuestions: ', allQuestions);
-        // Set 1st Question
-        if (allQuestions && questionIndex <= allQuestions.length - 1) {
-            setQuestion(allQuestions[questionIndex]);
-        }
-    }
-
-    const mapCategoryDetailsToQuestion = (category) => {
-        let questions = category.questions.map((question) => {
-            return {
-                ...question,
-                category_id: category.category_id,
-                category_name: category.category_name,
-                attempted: false,
-                selectedAnsIndex: -1,
-                answer_options: mapAnsOptions(question.answer_options)
-
-            }
-        });
-        return questions;
-    }
-
-    const mapAnsOptions = (ansOptions) => {
-        const ansOptionsAsAObject = ansOptions.map((ansOption) => {
-            return {
-                title: ansOption
-            }
-        });
-        return ansOptionsAsAObject;
-    }
+    const [questionState, questionDispatch] = useReducer(questionReducer, {});
+    let { question = {}, updateQuestionsSet } = questionState;
 
     const nextQuestion = () => {
-        if (canGoNext()) {
+        if (canGoNext(questionIndex, questions)) {
             questionIndex = questionIndex + 1;
             setQuestionIndex(questionIndex);
-            setQuestion(questions[questionIndex]);
+            questionDispatch({ type: ActionType.SET_QUESTION, nowShowingQuestion: questions[questionIndex] })
         }
     }
 
     const previousQuestion = () => {
-        if (canGoPrevious()) {
+        if (canGoPrevious(questionIndex)) {
             questionIndex = questionIndex - 1;
             setQuestionIndex(questionIndex);
-            setQuestion(questions[questionIndex]);
+            questionDispatch({ type: ActionType.SET_QUESTION, nowShowingQuestion: questions[questionIndex] })
         }
     }
 
-    const canGoNext = () => {
-        return questionIndex < questions.length - 1;
-    }
-
-    const canGoPrevious = () => {
-        return questionIndex > 0;
-    }
-
-    const questionAttempted = (selectedIndex, ansOption) => {
-        if (question.attempted) { return; }
-        selectedIndex = selectedIndex + 1; // As selected index starts from 0 where ans_index starts from 1
-        console.log(selectedIndex, ansOption);
-        question.attempted = true;
-        question.selectedAnsIndex = selectedIndex
-        setSelectedIndex(selectedIndex);
-        if (question.answer_index == selectedIndex) { // attempted correctly
-            showAnswers(true, selectedIndex - 1);
-            updatePoints();
-
-        } else { // attempted wrongly
-            showAnswers(false, selectedIndex - 1);
-
-        }
-    }
-
-    const showAnswers = (attemptedCorrectly, selectedI) => {
-        if (attemptedCorrectly) {
-            question.answer_options[selectedI] = { ...question.answer_options[selectedI], correct: true }
-        } else {
-            question.answer_options[question.answer_index - 1] = { ...question.answer_options[question.answer_index - 1], correct: true }
-            question.answer_options[selectedI] = { ...question.answer_options[selectedI], incorrect: true }
-        }
-    }
-
-    const updatePoints = () => {
-        points = points + question.points;
-        setPoints(points);
-    }
-
-    const ansOptionClasses = classNames(
-        {
-            'ansOption': true,
-            'correctAns': question.answer_index
-        }
-    );
-
-    // Run only once when component renderslike componentDidMount
+    // Run only after question attempted
     useEffect(() => {
-        getAllQuestions();
+        const indexToReplace = questions.findIndex((que) => que.question_id === question.question_id);
+        if (indexToReplace >= 0) {
+            const allQuestions = update(questions, { $splice: [[indexToReplace, 1, question]] });
+            setQuestions(allQuestions);
+        }
+    }, [updateQuestionsSet]);
+
+    // Run only once when component render like componentDidMount
+    useEffect(() => {
+        const allQuestions = getAllQuestions(game, questionIndex, questionDispatch);
+        setQuestions(allQuestions);
     }, [])
 
     return (
@@ -142,15 +66,15 @@ const Questions = () => {
                         {question.answer_options && question.answer_options.map((ansOption, index) =>
                             <div key={index} className={"ansOption " + ((question.attempted && question.answer_index == index + 1) ? 'correctAns' : '')}
                                 style={{ background: (question.attempted && ansOption.incorrect) ? 'red' : '' }}
-                                onClick={() => questionAttempted(index, ansOption)}>
+                                onClick={() => questionAttempted(question, index, ansOption, questionDispatch)}>
                                 <span className="ans">{question.answer_options[index].title}</span>
                             </div>)}
                     </div>
                 </div>
             </div>
             <div className="questionFooter">
-                <Button className="previous" disabled={!canGoPrevious()} onClick={() => previousQuestion()}>Previous</Button>
-                <Button className="next" disabled={!canGoNext()} onClick={() => nextQuestion()}>Next</Button>
+                <Button className="previous" disabled={!canGoPrevious(questionIndex)} onClick={() => previousQuestion()}>Previous</Button>
+                <Button className="next" disabled={!canGoNext(questionIndex, questions)} onClick={() => nextQuestion()}>Next</Button>
             </div>
         </div>
     )
