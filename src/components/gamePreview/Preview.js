@@ -9,14 +9,18 @@ import * as ActionType from "../../variables/ActionType";
 import { creatingGameSession, getGameDetails } from "../gamePreview/gameManager";
 import { Typography } from '@material-ui/core';
 
+
 const GamePreview = (props) => {
     const selectedGame = props.game;
-    const [gameState, gameDispatch] = useReducer(GameReducer, selectedGame);
+    const initialGameState = { game: { ...selectedGame }, fetchingGameDetails: false, error: undefined }
+    const [gameState, gameDispatch] = useReducer(GameReducer, initialGameState);
     let { game = { ...selectedGame }, fetchingGameDetails, error } = gameState;
     const [btnTitle, setBtnTitle] = useState("Play");
     const [player, setPlayer] = useState({});
 
     useEffect(() => {
+        console.log('Rendering it first time');
+        game['earnedPoints'] = 0;
         setPlayer(getPlayer());
     }, [])
 
@@ -25,15 +29,18 @@ const GamePreview = (props) => {
     useEffect(() => {
         // On game session created
         console.log('Session Rx useEffect: ', gameState);
-        if (game.gameSessionId) {
-            game['earnedPoints'] = 0;
-            getGameDetails(game, player.player_id, player.company_id, gameDispatch);
+        if (gameState.game) {
+            game = gameState.game;
+            if (game.shouldReplay) {
+                game.shouldReplay = false;
+                playGame();
+            }
+            if (game.gameSessionId) {
+                game['earnedPoints'] = 0;
+                getGameDetails(game, player.player_id, player.company_id, gameDispatch);
+            }
         }
     }, [game && game.gameSessionId]);
-
-    useEffect(() => {
-        console.log('Session Rx useEffect, categories: ', game.categories);
-    }, [game && game.categories])
 
     const playGame = () => {
         console.log('Play game, creating game session');

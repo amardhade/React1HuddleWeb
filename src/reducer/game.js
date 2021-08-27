@@ -8,71 +8,55 @@ const initialState = {
     error: null,
 };
 
-const GameReducer = (game, action) => {
+const GameReducer = (gameState, action) => {
     console.log('Action: ', action);
     switch (action.type) {
         case ActionType.CREATING_GAME_SESSION:
             return {
-                ...game,
+                ...gameState,
                 fetchingGameDetails: true
             }
         case ActionType.CREATING_GAME_SESSION_SUCCESS:
-            return {
-                game: {
-                    ...game,
-                    gameSessionId: action.gameSessionId
-                },
-                fetchingGameDetails: false,
-                error: undefined
-            }
+            gameState.game['gameSessionId'] = action.gameSessionId
+            return { ...gameState }
         case ActionType.CREATING_GAME_SESSION_FAILED:
             return {
-                game: { ...game, gameSessionId: undefined },
+                game: { ...gameState, gameSessionId: undefined },
                 fetchingGameDetails: false,
                 error: action.error
             }
         case ActionType.FETCHINNG_GAME_CATEGORIES:
             return {
-                ...game,
+                ...gameState,
                 fetchingGameDetails: true,
             }
         case ActionType.FETCHINNG_GAME_CATEGORIES_SUCCESS:
-            const cat = { categories: action.data.game_categories,
-                    totalCategories: action.data.total_active_category,
-                    totalPoints: action.data.total_points_for_game,
-                    totalQuestionsCount: action.data.total_questions_for_game 
+            const cat = {
+                categories: action.data.game_categories,
+                totalCategories: action.data.total_active_category,
+                totalPoints: action.data.total_points_for_game,
+                totalQuestionsCount: action.data.total_questions_for_game
             }
-            console.log('Cat: ', cat);
-            console.log('Game: ', game);
-            const newGameState = {...game.game, ...cat}
-            console.log('newGameState: ', newGameState);
+            const newGameState = { ...gameState.game, ...cat }]
             return {
-                game: {...newGameState},
+                game: { ...newGameState },
                 error: undefined,
                 fetchingGameDetails: false
             };
-        // const obj1 = {
-        //     fetchingGameDetails: false,
-        //     error: undefined
-        // }
-        // const obj2 = {
-        //     catrgories: action.data.game_categories,
-        //     totalCategories: action.data.total_active_category,
-        //     totalPoints: action.data.total_points_for_game,
-        //     totalQuestionsCount: action.data.total_questions_for_game
-        // }
-
-        // totalCategories: action.data.total_active_category,
-        // totalPoints: action.data.total_points_for_game,
-        // totalQuestionsCount: action.data.total_questions_for_game
         case ActionType.FETCHINNG_GAME_CATEGORIES_FAILED:
             return {
-                game: { ...game, gameCategories: [] },
+                game: { ...gameState, gameCategories: [] },
+                fetchingGameDetails: false,
+                error: action.error
+            }
+        case ActionType.REPLAY_GAME:
+            return {
+                game: { ...action.replayGame },
                 fetchingGameDetails: false,
                 error: action.error
             }
         default:
-            return { ...game };
+            return { ...gameState };
     }
 }
 
