@@ -1,0 +1,25 @@
+.endGameWrapper {
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    .gameDetailsWrapper {
+        display: flex;
+        margin-top: 100px;
+        flex-direction: column;
+        width: auto;
+    }
+    .endGameFooter {
+        display: flex;
+        width: 100%;
+        .replay {
+            font-size: 1em;
+            width: 50%;
+        }
+        .homeBtn {
+            font-size: 1em;
+            width: 50%;
+        }
+    }
+}

@@ -1,7 +1,6 @@
 import React, {useReducer} from "react";
 import { connect } from "react-redux";
 import GameProfile from "../gameProfile/GameProfile";
-import GameCategory from "../gameCategory/GameCategory";
 import './GamePreview.scss';
 import { getPlayer } from "../../utils/StorageUtils";
 import { getGameDetails } from './gameManager';

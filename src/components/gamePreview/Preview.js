@@ -26,6 +26,7 @@ const GamePreview = (props) => {
         // On game session created
         console.log('Session Rx useEffect: ', gameState);
         if (game.gameSessionId) {
+            game['earnedPoints'] = 0;
             getGameDetails(game, player.player_id, player.company_id, gameDispatch);
         }
     }, [game && game.gameSessionId]);

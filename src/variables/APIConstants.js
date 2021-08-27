@@ -6,3 +6,5 @@ export const LOGIN = `${VERSION_V15}/auth/login`;
 export const GET_GAMES = `${VERSION_V15}/game/get_game/regular`;
 export const CREATING_GAME_SESSION = `${VERSION_V25}/game/create_game_session`;
 export const FETCH_QUESTIONS = `${VERSION_V25}/game/questions`;
+export const SUBMIT_QUESTION = `${VERSION_V25}/game/submit_answer`;
+export const END_GAME = `${VERSION_V25}/game/end_game`;
