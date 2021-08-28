@@ -4,24 +4,19 @@ import GameContext from '../../context/GameContext';
 import { Button } from '@material-ui/core';
 import * as ActionType from '../../variables/ActionType';
 import './gameEnd.scss';
+import { resetGameToDefaultState } from '../gamePreview/gameManager';
+
 const GameEnd = () => {
     const { game, gameDispatch } = useContext(GameContext);
 
     const replayGame = () => {
-        const replayGame = { ...game }
-        replayGame.attempts_remain = replayGame.attempts_remain - 1;
-        replayGame.categories = undefined;
-        replayGame.earnedPoints = 0;
-        replayGame.fetchingGameDetails = false;
-        replayGame.gameSessionId = undefined;
-        replayGame['shouldReplay'] = true;
+        const replayGame = resetGameToDefaultState(game, true);
         gameDispatch({ type: ActionType.REPLAY_GAME, replayGame });
 
     }
     const navigateToHome = () => {
-        // const path = `/games/${game.game_id}`
-        // console.log('Path: ', path)
-        // history.push(path)
+        const restartGame = resetGameToDefaultState(game, false);
+        gameDispatch({ type: ActionType.RESTART_GAME, restartGame });
     }
 
     return (

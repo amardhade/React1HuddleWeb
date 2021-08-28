@@ -34,6 +34,8 @@ const GamePreview = (props) => {
             if (game.shouldReplay) {
                 game.shouldReplay = false;
                 playGame();
+            } else {
+                setBtnTitle("Play");
             }
             if (game.gameSessionId) {
                 game['earnedPoints'] = 0;

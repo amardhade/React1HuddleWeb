@@ -86,3 +86,14 @@ const preparePayloadForEndGame = (game) => {
         "time_taken": 60
     }
 }
+
+export const resetGameToDefaultState = (game, shouldReplay) => {
+    const replayGame = { ...game }
+    replayGame.attempts_remain = replayGame.attempts_remain - 1;
+    replayGame.categories = undefined;
+    replayGame.earnedPoints = 0;
+    replayGame.fetchingGameDetails = false;
+    replayGame.gameSessionId = undefined;
+    replayGame['shouldReplay'] = shouldReplay;
+    return replayGame;
+}

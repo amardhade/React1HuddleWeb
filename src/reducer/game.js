@@ -37,7 +37,7 @@ const GameReducer = (gameState, action) => {
                 totalPoints: action.data.total_points_for_game,
                 totalQuestionsCount: action.data.total_questions_for_game
             }
-            const newGameState = { ...gameState.game, ...cat }]
+            const newGameState = { ...gameState.game, ...cat }
             return {
                 game: { ...newGameState },
                 error: undefined,
@@ -55,6 +55,13 @@ const GameReducer = (gameState, action) => {
                 fetchingGameDetails: false,
                 error: action.error
             }
+        case ActionType.RESTART_GAME: {
+            return {
+                game: { ...action.restartGame },
+                fetchingGameDetails: false,
+                error: action.error
+            }
+        }    
         default:
             return { ...gameState };
     }
