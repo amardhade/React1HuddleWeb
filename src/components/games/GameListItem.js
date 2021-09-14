@@ -1,33 +1,45 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import Paper from '@material-ui/core/Paper';
 import { Avatar, Typography } from "@material-ui/core";
+import { useLocation } from 'react-router-dom';
+
 // import { connect } from "react-redux";
 // import { removeExpense } from "../actions/expenses";
 
-class GameListItem extends React.Component {
+const GameListItem = (props) => {
 
-    constructor(props) {
-        super(props);
+    console.log('Props: ', props);
+    const game = props.game;
+    const history = useHistory();
+    let { path, url } = useRouteMatch();
+    // let location = useLocation();
+    // constructor(props) {
+    //     super(props);
+    // }
+
+    const handleGameClick = (gameId) => {
+        // if(history.location.pathname.includes('/play')) {
+        //     console.log("Returned");    
+        //     return
+        // }
+        const path = `/games/${gameId}`
+        history.push(path);
+        console.log('Path: ', history.location);
+        props.onGameSelected(gameId);
     }
 
-    handleGameClick(path) {
-        console.log('Path: ', this.props);
-        this.props && this.props.history.push(path);
-    }
 
-    render() {
-        console.log('Render from GameListItem');
-        return (
-            <Paper className="gridItem">
-                <div className="gridContent" onClick={() => this.handleGameClick(`/games/${this.props.game.game_id}`)}>
-                    <Avatar src={this.props.game.game_logo}> </Avatar>
-                    <Typography className="gameName" variant="subtitle1">{this.props.game.game_name}</Typography>
-                </div>
-            </Paper>
-        )
-    }
+    return (
+        <Paper className="gridItem">
+            <div className="gridContent" onClick={() => handleGameClick(game.game_id)}>
+                <Avatar src={game.game_logo}> </Avatar>
+                <Typography className="gameName" variant="subtitle1">{game.game_name}</Typography>
+            </div>
+        </Paper>
+    )
 }
 
-export default connect()(GameListItem);
+export { GameListItem as default }

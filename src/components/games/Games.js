@@ -1,89 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { isAuthenticated } from '../../utils/utilities';
 import GameListItem from './GameListItem';
-import configureStore from '../../store/ConfigureStore';
-import { connect } from 'react-redux';
 import { getGames } from './GamesManager';
 import GamePreview from '../gamePreview/Preview';
 import './Games.scss';
 import Grid from '@material-ui/core/Grid';
+import { Route, useHistory } from 'react-router-dom';
+import * as ActionType from '../../variables/ActionType';
 
 
-class Games extends React.Component {
-    constructor(props) {
-        super(props);
-
+const Games = () => {
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const [selectedGame, updateSelectedGame] = useState(undefined);
+    const gamesInfo = useSelector((state) => state.gamesState);
+    console.log("Remounting Games Component");
+    useEffect(() => {
         if (!isAuthenticated()) {
-            this.navigateToAuthPage();
+            navigateToAuthPage();
             return;
         }
-        this.store = configureStore();
-        this.state = {
-            games: [],
-            selectedGame: null,
-            fetchingGames: false,
-            fetchingGamesSuccess: false,
-            fetchingGamesError: false,
-            errorMsg: undefined
+        // Get games
+        getGames(dispatch);
+        console.log('gamesInfo: ', gamesInfo);
+    }, [])
+
+    const onGameSelected = (gameId) => {
+        console.log('GameID: ', gameId);
+        const gameSelected = gamesInfo.games.filter((game) => gameId == game.game_id)[0];
+        console.log('gameSelected: ', gameSelected);
+        if (gameSelected) {
+            updateSelectedGame(gameSelected)
+            dispatch({ type: ActionType.GAME_SELECTED, selectedGame: gameSelected });
         }
-        this.onStoreUpdate();
     }
 
-    componentDidMount() {
-        this.store.dispatch(getGames());
+    const navigateToAuthPage = () => {
+        history.push('/');
     }
 
-    onStoreUpdate() {
-        this.store.subscribe(() => {
-            const updateState = this.store.getState();
-            console.log('Updated state: ', updateState);
-            this.setState(() => ({
-                fetchingGames: updateState.gamesReducers.fetchingGames,
-                games: updateState.gamesReducers.games
-            }));
-        });
-    }
 
-    navigateToAuthPage() {
-        this.props.history.push('/');
-    }
-
-    render() {
-        console.log('Render from Games: ', this.state);
-        if(!this.state) {
-            return null
-        }
-        return (
-            <div className="mainWrapper">
-                <p className="header">1Huddle Games</p>
-                {this.state.fetchingGames && <p>Fetching games..</p>}
-                {this.state.games && !this.state.fetchingGames && !this.state.games.length && <p>No games to play.</p>}
-                <div className="gamesWrapper">
-                    <div className="gameListWrapper">
-                        <Grid container spacing={2}>
-                            {this.state.games && this.state.games.map((game) => (
-                                <Grid key={game.game_id} item>
-                                    <GameListItem game={game} key={game.game_id} history={this.props.history} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </div>
-                    {!this.state.fetchingGames
-                        && this.props.match.params.game_id
-                        && <div className="gameDetailsWrapper">
-                            <GamePreview game={this.state.games.filter((game) => this.props.match.params.game_id == game.game_id )[0]}></GamePreview>
-                        </div>}
+    return (
+        <div className="mainWrapper">
+            <p className="header">1Huddle Games</p>
+            {gamesInfo.fetchingGames && <p>Fetching games..</p>}
+            {gamesInfo.games && !gamesInfo.fetchingGames && !gamesInfo.games.length && <p>No games to play.</p>}
+            <div className="gamesWrapper">
+                <div className="gameListWrapper">
+                    <Grid container spacing={2}>
+                        {gamesInfo.games && gamesInfo.games.length && gamesInfo.games.map((game) => (
+                            <Grid key={game.game_id} item>
+                                <GameListItem game={game} key={game.game_id} onGameSelected={onGameSelected} />
+                            </Grid>
+                        ))}
+                    </Grid>
                 </div>
+                {selectedGame && <div className="gameDetailsWrapper">
+                    <GamePreview></GamePreview>
+                </div>}
+
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-const mapStateToProps = (state, props) => {
-    return {
-        games: state.games,
-        fetchingGames: state.fetchingGames,
-    };
-}
-
-export default connect(mapStateToProps)(Games)
+export { Games as default }

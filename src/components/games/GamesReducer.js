@@ -1,35 +1,40 @@
 import * as ActionType from '../../variables/ActionType';
 
-const defaultGames = [];
-const gamesReducer = (games = defaultGames, action) => {
+const defaultGamesState = {
+    fetchingGames: true,
+    fetchingGamesSuccess: false,
+    fetchingGamesError: false,
+    errorMsg: undefined,
+    games: []
+};
+const initialGamesState = { games: [], fetchingGames: false, errorMsg: undefined };
+const gamesReducer = (state = initialGamesState, action) => {
     console.log('Games reducer: ', action);
     switch (action.type) {
         case ActionType.GAMES_FETCHING_PROGRESS:
             return {
+                ...state,
                 fetchingGames: true,
-                fetchingGamesSuccess: false,
-                fetchingGamesError: false,
-                errorMsg: undefined
+                errorMsg: undefined,
+                games: []
             }
         case ActionType.GAMES_FETCHING_SUCCESS:
+            console.log("Success: ", action)
             return {
-                games: action.games,
+                ...state,
+                games: [...action.games],
                 fetchingGames: false,
-                fetchingGamesSuccess: true,
-                fetchingGamesError: false,
                 errorMsg: undefined
             }
         case ActionType.GAMES_FETCHING_ERROR:
             return {
-                games: action.games,
+                ...state,
                 fetchingGames: false,
-                fetchingGamesSuccess: false,
-                fetchingGamesError: true,
                 error: action.error,
                 errorMsg: "Something went wrong, while fetching games"
             }
         default:
-            return games;
+            return state;
     }
 }
 

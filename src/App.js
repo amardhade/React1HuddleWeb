@@ -8,7 +8,7 @@ import GamePreview from './components/gamePreview/GamePreview';
 import GameListItem from './components/games/GameListItem';
 
 export default class App extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +29,9 @@ export default class App extends React.Component {
             }
             {
               <Route path='/games/:game_id' component={Games} exact={true}/>
+            }
+            {
+              <Route path='/games/:game_id/play' component={Games} exact={true}/>
             }
           </Switch>
         </div>

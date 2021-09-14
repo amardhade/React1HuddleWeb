@@ -11,7 +11,8 @@ import GameEnd from '../gameEnd/gameEnd';
 
 const Questions = () => {
 
-    const { game } = useContext(GameContext);
+    const { gameState } = useContext(GameContext);
+    console.log('Question gameState: ', gameState);
     const [questions, setQuestions] = useState([]); // Default empty
     let [questionIndex, setQuestionIndex] = useState(0); // Default 0
     const [questionState, questionDispatch] = useReducer(questionReducer, {});
@@ -37,10 +38,10 @@ const Questions = () => {
     // Run only after question attempted
     useEffect(() => {
         if (question && question.attemptedCorrectely) {
-            game.earnedPoints = game.earnedPoints + question.points
+            gameState.earnedPoints = gameState.earnedPoints + question.points
         }
-        console.log('Game: ', game);
-        console.log('Question: ', question);
+        // console.log('Game: ', game);
+        // console.log('Question: ', question);
         const indexToReplace = questions.findIndex((que) => que.question_id === question.question_id);
         if (indexToReplace >= 0) {
             const allQuestions = update(questions, { $splice: [[indexToReplace, 1, question]] });
@@ -50,7 +51,7 @@ const Questions = () => {
 
     // Run only once when component render like componentDidMount
     useEffect(() => {
-        const allQuestions = getAllQuestions(game, questionIndex, questionDispatch);
+        const allQuestions = getAllQuestions(gameState.categories, questionIndex, questionDispatch);
         setQuestions(allQuestions);
     }, [])
 
@@ -73,7 +74,7 @@ const Questions = () => {
                             {question.answer_options && question.answer_options.map((ansOption, index) =>
                                 <div key={index} className={"ansOption " + ((question.attempted && question.answer_index == index + 1) ? 'correctAns' : '')}
                                     style={{ background: (question.attempted && ansOption.incorrect) ? 'red' : '' }}
-                                    onClick={() => questionAttempted(game, question, index, ansOption, questionDispatch)}>
+                                    onClick={() => questionAttempted(gameState, question, index, ansOption, questionDispatch)}>
                                     <span className="ans">{question.answer_options[index].title}</span>
                                 </div>)}
                         </div>
@@ -85,7 +86,7 @@ const Questions = () => {
                     <Button className="previous" disabled={!canGoPrevious(questionIndex)} onClick={() => previousQuestion()}>Previous</Button>
                     {canGoNext(questionIndex, questions) ?
                         <Button className="next" onClick={() => nextQuestion()}>Next</Button>
-                        : <Button className="done" disabled={gameEnded} onClick={() => { endGame(game); setGameEnded(true) }}>Done</Button>
+                        : <Button className="done" disabled={gameEnded} onClick={() => { endGame(gameState); setGameEnded(true) }}>Done</Button>
                     }
                 </div>
             }

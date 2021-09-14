@@ -3,9 +3,9 @@ import { getPlayer } from "../../utils/StorageUtils";
 import * as OHAxios from '../axios/OHAxios';
 import * as APIConstants from '../../variables/APIConstants';
 
-export const getAllQuestions = (game, questionIndex, dispatch) => {
+export const getAllQuestions = (categories, questionIndex, dispatch) => {
     var allQuestions = [];
-    game.categories.map((category) => {
+    categories.map((category) => {
         const catQuestions = mapCategoryDetailsToQuestion(category);
         if (catQuestions && catQuestions.length) {
             catQuestions.map((catQuestion) => {

@@ -2,38 +2,19 @@ import * as ActionType from '../../variables/ActionType';
 import * as OHAxios from '../axios/OHAxios';
 import * as APIConstants from '../../variables/APIConstants';
 
-export const fetchingGamesSuccess = (games) => ({
-    type: ActionType.GAMES_FETCHING_SUCCESS,
-    games,
-    error: null
-})
-
-export const fetchingGames = () => ({
-    type: ActionType.GAMES_FETCHING_PROGRESS,
-    games: null,
-    error: null
-})
-
-export const fetchingGamesError = (error) => ({
-    type: ActionType.GAMES_FETCHING_ERROR,
-    games: null,
-    error
-})
-
-export const getGames = () => {
-    return async (dispatch, getState) => {
-        try {
-            dispatch(fetchingGames());
-            await OHAxios.get(APIConstants.GET_GAMES)
-            .then((response) => {
-                if(response.success) {
+export const getGames = (dispatch) => {
+    try {
+        dispatch({ type: ActionType.GAMES_FETCHING_PROGRESS });
+        OHAxios.get(APIConstants.GET_GAMES).then((response) => {
+                if (response.success) {
                     const games = response.data.games;
-                    dispatch(fetchingGamesSuccess(games));
+                    console.log('Games fetched: ', games);
+                    dispatch({ type: ActionType.GAMES_FETCHING_SUCCESS, games });
                 } else {
-                    dispatch(fetchingGamesError(response));
+                    dispatch({ type: ActionType.GAMES_FETCHING_ERROR, games: [] });
                 }
-            })
-            .error((error) => { dispatch(fetchingGamesError(error)); })
-        } catch(error) {}
+            }).error((error) => { dispatch({ type: ActionType.GAMES_FETCHING_ERROR, error: error }); })
+    } catch (error) {
+        dispatch({ type: ActionType.GAMES_FETCHING_ERROR, games: [], error: error })
     }
 }
