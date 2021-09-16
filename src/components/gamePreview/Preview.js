@@ -15,10 +15,7 @@ import { useSelector } from 'react-redux';
 const GamePreview = (props) => {
 
     const gameInfo = useSelector((state) => state.gameState);
-    console.log('gameInfo: ', gameInfo);
-    // const selectedGame = gameInfo.game;
     const [gameState, gameDispatch] = useReducer(GameReducer, gameInfo.game);
-    // let { game = { ...selectedGame }, fetchingGameDetails, error } = gameState;
     const [btnTitle, setBtnTitle] = useState("Play");
     const [player, setPlayer] = useState({});
     let [ game, setSelectedGame ] = useState(gameInfo.game);
@@ -40,21 +37,22 @@ const GamePreview = (props) => {
         console.log('Session Rx useEffect: ', gameInfo);
         if (gameInfo.game) {
             game = gameInfo.game;
-            if (game.shouldReplay) {
-                game.shouldReplay = false;
-                playGame();
-            } else {
-                setBtnTitle("Play");
-            }
+            // if (game.shouldReplay) {
+            //     game.shouldReplay = false;
+            //     // const path = `/games/${game.game_id}`;
+            //     // history.push(path);
+            //     playGame();
+            // } else {
+            //     setBtnTitle("Play");
+            // }
             if(!game.hasOwnProperty('gameSessionId') || !game.gameSessionId) {
                 game['gameSessionId'] = gameState.gameSessionId
             }
             if (game.gameSessionId) {
                 game['earnedPoints'] = 0;
                 getGameDetails(game, player.player_id, player.company_id, gameDispatch);
-                const path = `/games/${game.game_id}/play`;
-                console.log("Path: ", path);
-                history.push(path);
+                // const path = `/games/${game.game_id}/play`;
+                // history.push(path);
             }
         }
     }, [gameState.gameSessionId]);

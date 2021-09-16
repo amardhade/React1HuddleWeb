@@ -88,12 +88,11 @@ const preparePayloadForEndGame = (game) => {
 }
 
 export const resetGameToDefaultState = (game, shouldReplay) => {
-    const replayGame = { ...game }
-    replayGame.attempts_remain = replayGame.attempts_remain - 1;
-    replayGame.categories = undefined;
-    replayGame.earnedPoints = 0;
-    replayGame.fetchingGameDetails = false;
-    replayGame.gameSessionId = undefined;
-    replayGame['shouldReplay'] = shouldReplay;
-    return replayGame;
+    console.log('Restart gameState: ', game);
+    game.attempts_remain = game.attempts_remain - 1;
+    game.categories = undefined;
+    game.earnedPoints = 0;
+    game.gameSessionId = undefined;
+    game['shouldReplay'] = shouldReplay;
+    return game;
 }
